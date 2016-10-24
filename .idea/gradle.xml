@@ -9,6 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/backend" />
+            <option value="$PROJECT_DIR$/jokeandroidlibrary" />
+            <option value="$PROJECT_DIR$/jokejavalibrary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
