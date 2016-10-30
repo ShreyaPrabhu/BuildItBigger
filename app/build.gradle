@@ -28,9 +28,11 @@ android {
     productFlavors {
         free {
             applicationId "com.udacity.gradle.builditbigger.free"
+            buildConfigField "boolean", "PAID_VERSION", "false"
         }
         paid {
             applicationId "com.udacity.gradle.builditbigger.paid"
+            buildConfigField "boolean", "PAID_VERSION", "true"
         }
     }
 
