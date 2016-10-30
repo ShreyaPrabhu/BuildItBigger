@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger.free;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.shreyaprabhu.jokeandroidlibrary.jokeandroidlibraryactivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -56,5 +58,9 @@ public class MainActivityFragment extends Fragment implements OnJokeLoaded {
     @Override
     public void onJokeLoaded(String jokeText) {
         //Toast.makeText(this,jokeText,Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(getContext(), jokeandroidlibraryactivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("Joke",jokeText);
+        startActivity(intent);
     }
 }

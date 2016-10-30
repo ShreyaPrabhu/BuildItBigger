@@ -1,11 +1,13 @@
 package com.udacity.gradle.builditbigger.paid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.shreyaprabhu.jokeandroidlibrary.jokeandroidlibraryactivity;
 import com.udacity.gradle.builditbigger.EndpointsAsyncTask;
 import com.udacity.gradle.builditbigger.OnJokeLoaded;
 import com.udacity.gradle.builditbigger.R;
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
     @Override
     public void onJokeLoaded(String jokeText) {
         //Toast.makeText(this,jokeText,Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, jokeandroidlibraryactivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("Joke",jokeText);
+        startActivity(intent);
     }
 
 }
