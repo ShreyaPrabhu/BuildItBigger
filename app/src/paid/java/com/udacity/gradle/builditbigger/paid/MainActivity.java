@@ -7,10 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.udacity.gradle.builditbigger.EndpointsAsyncTask;
+import com.udacity.gradle.builditbigger.OnJokeLoaded;
 import com.udacity.gradle.builditbigger.R;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-            new EndpointsAsyncTask().execute(MainActivity.this);
+            new EndpointsAsyncTask(this).execute(MainActivity.this);
+    }
+
+    @Override
+    public void onJokeLoaded(String jokeText) {
+        //Toast.makeText(this,jokeText,Toast.LENGTH_SHORT).show();
     }
 
 }

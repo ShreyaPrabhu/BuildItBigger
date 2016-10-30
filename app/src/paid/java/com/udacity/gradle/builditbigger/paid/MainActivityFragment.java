@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.udacity.gradle.builditbigger.EndpointsAsyncTask;
+import com.udacity.gradle.builditbigger.OnJokeLoaded;
 import com.udacity.gradle.builditbigger.R;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements OnJokeLoaded {
 
     public MainActivityFragment() {
     }
@@ -36,7 +37,12 @@ public class MainActivityFragment extends Fragment {
         return root;
     }
 	
-	public void tellJoke(){
-        new EndpointsAsyncTask().execute(getActivity().getApplicationContext());
+	public void tellJoke() {
+            new EndpointsAsyncTask(this).execute(getContext());
+    }
+
+    @Override
+    public void onJokeLoaded(String jokeText) {
+        //Toast.makeText(this,jokeText,Toast.LENGTH_SHORT).show();
     }
 }

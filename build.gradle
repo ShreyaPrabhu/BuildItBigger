@@ -17,3 +17,25 @@ allprojects {
         jcenter()
     }
 }
+task startServer(dependsOn:  ":backend:appengineRun") {
+    project(":backend").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println "Started dev server."
+    }
+}
+
+task runAllTests(dependsOn: [':app:check', ':app:connectedCheck', ':jokejavalibrary:check',
+                             ':jokeandroidlibrary:connectedCheck', ':jokeandroidlibrary:check']) {
+    doLast {
+        println "Completed running tests."
+    }
+}
+
+task runAllTestsWithServer(dependsOn: ['startServer', 'runAllTests']) {
+    group = "verification"
+    mustRunAfter "startServer"
+    tasks.runAllTests.mustRunAfter "startServer"
+    finalizedBy ":backend:appengineStop"
+}

@@ -1,29 +1,44 @@
 package com.udacity.gradle.builditbigger;
 
-import android.app.Application;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.ApplicationTestCase;
+import android.test.InstrumentationTestCase;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import static android.support.test.InstrumentationRegistry.getContext;
 
 /**
  * Created by Shreya Prabhu on 10/24/2016.
  */
 
-@RunWith(AndroidJUnit4.class)
-public class EndpointsAsyncTaskTest extends ApplicationTestCase<Application> {
+public class EndpointsAsyncTaskTest extends InstrumentationTestCase implements OnJokeLoaded {
+	
+	private static String jokeTextResult;
+    private static boolean called;
+    private CountDownLatch signal;
+    final String testEndpoint = "https://builditbigger-147403.appspot.com/_ah/api/";
 
-    public EndpointsAsyncTaskTest() {
-        super(Application.class);
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        signal = new CountDownLatch(1);
     }
 
-    @Test
-    public void testonPostExecute() throws ExecutionException, InterruptedException {
-        assertNotNull(new EndpointsAsyncTask().execute(getContext()).get());
+    @Override
+    public void onJokeLoaded(String jokeText) {
+        called = true;
+        jokeTextResult = jokeText;
+        signal.countDown();
+    }
 
+	public void testRetrieveJokeTask() throws InterruptedException, ExecutionException {
+        new EndpointsAsyncTask(this).execute(getContext()).get();
+        signal.await(30, TimeUnit.SECONDS);
+        assertTrue(called);
+        assertNotNull(jokeTextResult);
+        Boolean stringIsEmpty = jokeTextResult.equals("");
+        assertFalse(stringIsEmpty);
     }
 
 }

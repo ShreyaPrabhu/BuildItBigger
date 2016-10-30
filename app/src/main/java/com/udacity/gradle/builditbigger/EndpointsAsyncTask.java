@@ -16,16 +16,25 @@ import java.io.IOException;
  */
 
 public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
+
+    private OnJokeLoaded listener;
     private static MyApi myApiService = null;
-    private Context context;
+	private Context context;
+    
+	
+	public EndpointsAsyncTask(OnJokeLoaded listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected String doInBackground(Context... params) {
+
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     .setRootUrl("https://builditbigger-147403.appspot.com/_ah/api/")
                     ;
+			
             // end options for devappserver
 
             myApiService = builder.build();
@@ -40,11 +49,14 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
             return e.getLocalizedMessage();
         }
     }
+	
 
     @Override
     protected void onPostExecute(String result) {
+		
         Intent intent = new Intent(context, jokeandroidlibraryactivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		listener.onJokeLoaded(result);
         intent.putExtra("Joke",result);
         context.startActivity(intent);
     }
